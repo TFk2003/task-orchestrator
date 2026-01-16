@@ -19,6 +19,45 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit, isLoading }) => {
     const handleTaskTypeChange = (type: typeof TASK_TYPES[number]) => {
         setTaskType(type);
         setPayload(EXAMPLE_PAYLOADS[type] || '{}');
+        setError({});
+    };
+
+    const handlePayloadChange = (value: string) => {
+        setPayload(value);
+        // Clear payload error when user types
+        if (error.payload) {
+            setError(prev => ({ ...prev, payload: null }));
+        }
+    };
+
+    const handlePriorityChange = (value: number) => {
+        setPriority(value);
+        // Clear priority error when user changes value
+        if (error.priority) {
+            setError(prev => ({ ...prev, priority: null }));
+        }
+    };
+
+    const handleMaxRetriesChange = (value: number) => {
+        setMaxRetries(value);
+        // Clear maxRetries error when user changes value
+        if (error.maxRetries) {
+            setError(prev => ({ ...prev, maxRetries: null }));
+        }
+    };
+
+    const formatPayload = () => {
+        try {
+            const parsed = JSON.parse(payload);
+            const formatted = JSON.stringify(parsed, null, 2);
+            setPayload(formatted);
+            setError(prev => ({ ...prev, payload: null }));
+        } catch (err) {
+            setError(prev => ({ 
+                ...prev, 
+                payload: 'Cannot format invalid JSON' 
+            }));
+        }
     };
 
     const handleSubmit = (e: React.FormEvent) => {
@@ -47,43 +86,71 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit, isLoading }) => {
             priority,
             maxRetries
         });
+
+        resetForm();
+    };
+
+     const resetForm = () => {
+        setTaskType(TASK_TYPES[0]);
+        setPayload(EXAMPLE_PAYLOADS[TASK_TYPES[0]] || '{}');
+        setPriority(PRIORITY_LEVELS.MEDIUM);
+        setMaxRetries(3);
+        setError({});
+    };
+
+    const getPriorityLabel = () => {
+        const entry = Object.entries(PRIORITY_LEVELS).find(([_, v]) => v === priority);
+        return entry ? entry[0] : 'CUSTOM';
     };
 
     return (
         <div className="task-form-card">
             <h2>Submit New Task</h2>
             <form onSubmit={handleSubmit} className="task-form">
-                <div className="form-group">
+                <div className={`form-group ${error.taskType ? 'has-error' : ''}`}>
                     <label htmlFor="taskType">Task Type</label>
                     <select
                         id="taskType"
                         value={taskType}
                         onChange={(e) => handleTaskTypeChange(e.target.value as typeof TASK_TYPES[number])}
-                        className="form-select"
+                        className={`form-select ${error.taskType ? 'error' : ''}`}
+                        disabled={isLoading}
                     >
                         {TASK_TYPES.map((type) => (
                             <option key={type} value={type}>{type}</option>
                         ))}
                     </select>
+                    {error.taskType && <span className="error-text">{error.taskType}</span>}
                 </div>
-                <div className="form-group">
+                <div className={`form-group ${error.payload ? 'has-error' : ''}`}>
                     <label htmlFor="payload">Payload (JSON)</label>
                     <textarea
                         id="payload"
                         value={payload}
-                        onChange={(e) => setPayload(e.target.value)}
+                        onChange={(e) => handlePayloadChange(e.target.value)}
                         className={`form-textarea ${error.payload ? 'error' : ''}`}
                         rows={8}
                         placeholder='{"key": "value"}'
                         required
+                        disabled={isLoading}
                     />
                     {error.payload && <span className="error-text">{error.payload}</span>}
+                    <div className="payload-actions">
+                        <button 
+                            type="button" 
+                            className="format-button"
+                            onClick={formatPayload}
+                            disabled={isLoading}
+                        >
+                            Format JSON
+                        </button>
+                    </div>
                 </div>
                 <div className="form-row">
-                    <div className="form-group">
+                    <div className={`form-group ${error.priority ? 'has-error' : ''}`}>
                         <label htmlFor="priority">
                             Priority (1-10)
-                            <span className="hint">Current: {Object.entries(PRIORITY_LEVELS).find(([_, v]) => v === priority)?.[0] || 'CUSTOM'}</span>
+                            <span className="hint">Current: {getPriorityLabel()}</span>
                         </label>
                         <input
                         id="priority"
@@ -91,23 +158,25 @@ const TaskForm: React.FC<TaskFormProps> = ({ onSubmit, isLoading }) => {
                         min="1"
                         max="10"
                         value={priority}
-                        onChange={(e) => setPriority(parseInt(e.target.value))}
-                        className="form-input"
+                        onChange={(e) => handlePriorityChange(parseInt(e.target.value))}
+                        className={`form-input ${error.priority ? 'error' : ''}`}
+                        disabled={isLoading}
                         />
                         {error.priority && <span className="error-text">{error.priority}</span>}
                     </div>
-
-                    <div className="form-group">
-                        <label htmlFor="maxRetries">Max Retries</label>
+                    <div className={`form-group ${error.maxRetries ? 'has-error' : ''}`}>
+                        <label htmlFor="maxRetries">Max Retries (0-10)</label>
                         <input
                         id="maxRetries"
                         type="number"
                         min="0"
                         max="10"
                         value={maxRetries}
-                        onChange={(e) => setMaxRetries(parseInt(e.target.value))}
-                        className="form-input"
+                        onChange={(e) => handleMaxRetriesChange(parseInt(e.target.value))}
+                        className={`form-input ${error.maxRetries ? 'error' : ''}`} 
+                        disabled={isLoading}
                         />
+                        {error.maxRetries && <span className="error-text">{error.maxRetries}</span>}
                     </div>
                 </div>
                 <button 

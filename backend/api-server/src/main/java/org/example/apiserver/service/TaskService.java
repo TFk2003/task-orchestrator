@@ -115,6 +115,7 @@ public class TaskService {
         WorkerHealth workerHealth =  workerHealthRepository.findByWorkerId(task.getWorkerId())
                 .orElseThrow(() -> new RuntimeException("Task not found"));;
         workerHealth.setTotalProcessed(workerHealth.getTotalProcessed() + 1);
+        workerHealth.setActiveTasks(workerHealth.getActiveTasks() - 1);
         workerHealthRepository.save(workerHealth);
     }
 
