@@ -1,0 +1,174 @@
+.worker-card {
+  background: #f9fafb;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 1.25rem;
+  transition: all 0.2s;
+}
+
+.worker-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.worker-card.status-online {
+  border-color: #10b981;
+}
+
+.worker-card.status-busy {
+  border-color: #f59e0b;
+}
+
+.worker-card.status-offline {
+  border-color: #6b7280;
+  opacity: 0.7;
+}
+
+.worker-card.status-idle {
+  border-color: #3b82f6;
+}
+
+.worker-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.worker-id {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #374151;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9rem;
+}
+
+.worker-icon {
+  width: 18px;
+  height: 18px;
+  color: #667eea;
+}
+
+.worker-status {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.worker-status.status-online {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.worker-status.status-busy {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.worker-status.status-offline {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.worker-status.status-idle {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.worker-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.worker-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.metric-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.metric-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.metric-icon {
+  width: 16px;
+  height: 16px;
+  color: #667eea;
+}
+
+.metric-bar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 9999px;
+  overflow: hidden;
+}
+
+.metric-fill {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.3s ease;
+}
+
+.metric-fill.cpu {
+  background: linear-gradient(90deg, #3b82f6, #2563eb);
+}
+
+.metric-fill.memory {
+  background: linear-gradient(90deg, #8b5cf6, #7c3aed);
+}
+
+.metric-value {
+  font-size: 0.875rem;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.worker-footer {
+  padding-top: 1rem;
+  border-top: 1px solid #e5e7eb;
+}
+
+.last-heartbeat {
+  font-size: 0.75rem;
+  color: #6b7280;
+}
