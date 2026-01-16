@@ -1,0 +1,79 @@
+# .gitignore for Task Orchestrator Project
+
+# IDE files
+.vscode/
+.idea/
+*.iml
+*.iws
+*.ipr
+.classpath
+.project
+.settings/
+*.swp
+*.swo
+
+# Build files
+target/
+build/
+out/
+bin/
+dist/
+*.jar
+*.war
+*.ear
+*.class
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Docker
+docker-data/
+docker-volumes/
+
+# Database
+*.db
+*.sqlite
+*.h2.db
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temp files
+tmp/
+temp/
+
+# Frontend build
+frontend/build/
+frontend/.env
+frontend/.env.local
+
+# Backend
+backend/target/
+backend/.gradle/
+backend/.mvn/
+
+# Docker compose (optional - you might want to keep)
+# docker-compose.override.yml
+
+# Application specific
+application.properties
+application.yml
+application-*.yml
+!application.yml.example
+!application.properties.example
