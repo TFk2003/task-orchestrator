@@ -1,7 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { tasksApi, TaskUpdateRequest } from "../api/apiClient";
-import { Task, TaskSubmission } from "../types/task.types";
-import exp from "constants";
+import { tasksApi } from "../api/apiClient";
+import { TaskSubmission } from "../types/task.types";
 
 export const useTasks = (page: number = 0, size: number = 20) => {
     return useQuery({

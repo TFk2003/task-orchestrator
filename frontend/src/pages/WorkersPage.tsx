@@ -7,7 +7,7 @@ import { formatNumber, formatBytes, formatDateTime } from '../utils/formatters';
 import WorkerMonitor from '../components/WorkerMonitor/WorkerMonitor';
 import WorkerLoadChart from '../components/Charts/WorkerLoadChart';
 import Loading from '../components/common/Loading/Loading';
-import { Activity, Cpu, Server, HardDrive, XCircle, CheckCircle } from 'lucide-react';
+import { Activity, Cpu, Server, XCircle, CheckCircle } from 'lucide-react';
 import './WorkersPage.css';
 
 const WorkersPage: React.FC = () => {
