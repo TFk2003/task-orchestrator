@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { useTasks, useSubmitTask, useDeleteTask, useTasksByStatus } from '../../hooks/useTasks';
+import { useTasks, useSubmitTask, useDeleteTask } from '../../hooks/useTasks';
 import { useStatistics } from '../../hooks/useStatistics';
 import { useTheme } from '../../context/ThemeContext';
 import { useAppContext } from '../../context/AppContext';
-import { TaskSubmission, TaskFilters } from '../../types/task.types';
-import { REFRESH_INTERVALS, PRIORITY_LEVELS } from '../../utils/constants';
-import { formatNumber } from '../../utils/formatters';
+import { TaskSubmission } from '../../types/task.types';
+import { formatNumber, formatDateTime } from '../../utils/formatters';
 import TaskList from '../TaskList/TaskList';
 import TaskForm from '../TaskForm/TaskForm';
 import TaskStats from '../TaskStats/TaskStats';
 import TaskStatusChart from '../Charts/TaskStatusChart';
 import './Dashboard.css';
 import Loading from '../common/Loading/Loading';
+import { Activity } from 'lucide-react';
 
 const Dashboard: React.FC = () => {
     const [page, setPage] = useState(0);
@@ -67,11 +67,31 @@ const Dashboard: React.FC = () => {
     return (
         <div className={`dashboard ${theme}`}>
             <header className='dashboard-header'>
-                <h1>Task Orchestrator Dashboard</h1>
-                <p>Distributed Task Management System</p>
+                <div className="header-content">
+                    <div className="header-text">
+                        <h1>
+                            <Activity size={32} />
+                            Task Orchestrator Dashboard
+                        </h1>
+                        <p>Distributed Task Management System</p>
+                    </div>
+                    <div className="last-updated">
+                        Last updated: {formatDateTime(new Date().toISOString())}
+                    </div>
+                </div>
                 <div className="dashboard-stats-summary">
-                    <span>Total Tasks: {formatNumber(stats?.totalTasks || 0)}</span>
-                    <span>Success Rate: {stats?.successRate.toFixed(1)}%</span>
+                    <div className="summary-item">
+                        <span className="summary-label">Total Tasks</span>
+                        <span className="summary-value">{formatNumber(stats?.totalTasks || 0)}</span>
+                    </div>
+                    <div className="summary-item">
+                        <span className="summary-label">Success Rate</span>
+                        <span className="summary-value success">{stats?.successRate.toFixed(1)}%</span>
+                    </div>
+                    <div className="summary-item">
+                        <span className="summary-label">Active Workers</span>
+                        <span className="summary-value">{formatNumber(stats?.activeWorkers || 0)}</span>
+                    </div>
                 </div>
             </header>
 
@@ -79,10 +99,12 @@ const Dashboard: React.FC = () => {
                 <div className="dashboard-left">
                     <TaskStats/>
                     {chartData.length > 0 && (
-                    <div className='chart-section'>
-                        <h3>Status Distribution</h3>
-                        <TaskStatusChart data={chartData} />
-                    </div>
+                        <div className="chart-section">
+                            <h3>Status Distribution</h3>
+                            <div className="chart-wrapper">
+                                <TaskStatusChart data={chartData} />
+                            </div>
+                        </div>
                     )}
 
                     <TaskForm 
@@ -93,10 +115,11 @@ const Dashboard: React.FC = () => {
 
                 <div className="dashboard-right">
                     <TaskList
-                    tasks={tasksData?.content || []}
-                    totalPages={tasksData?.totalPages || 0}
-                    currentPage={page}
-                    onPageChange={setPage}
+                        tasks={tasksData?.content || []}
+                        totalPages={tasksData?.totalPages || 0}
+                        currentPage={page}
+                        onPageChange={setPage}
+                        isLoading={isLoading}
                     />
                 </div>
             </div>

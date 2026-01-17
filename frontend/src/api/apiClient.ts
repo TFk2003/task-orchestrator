@@ -1,11 +1,11 @@
 import axios from "axios";
 import { Task, TaskSubmission } from '../types/task.types';
 import { PageResponse } from '../types/common.types';
-
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080/api';
+import config from "../config";
 
 const apiClient = axios.create({
-    baseURL: API_BASE_URL,
+    baseURL: config.apiUrl,
+    timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
     },
